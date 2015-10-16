@@ -1,0 +1,19 @@
+From: Youhei SASAKI <uwabami@gfd-dennou.org>
+Date: Sat, 17 Oct 2015 02:46:06 +0900
+Subject: Drop shebang
+
+Signed-off-by: Youhei SASAKI <uwabami@gfd-dennou.org>
+---
+ completion/tmuxinator.bash | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/completion/tmuxinator.bash b/completion/tmuxinator.bash
+index 05ba7bb..fe2ead2 100755
+--- a/completion/tmuxinator.bash
++++ b/completion/tmuxinator.bash
+@@ -1,5 +1,3 @@
+-#!/usr/bin/env bash
+-
+ _tmuxinator() {
+     COMPREPLY=()
+     local word

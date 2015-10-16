@@ -1,0 +1,14 @@
+#!/usr/bin/make -f
+%:
+	dh $@ --buildsystem=ruby --with ruby
+
+override_dh_auto_install:
+	dh_auto_install
+	install -D -m644 $(CURDIR)/completion/tmuxinator.zsh \
+	  $(CURDIR)/debian/tmuxinator/usr/share/zsh/vendor_completions/_tmuxinator
+	install -D -m644 $(CURDIR)/completion/tmuxinator.bash \
+	  $(CURDIR)/debian/tmuxinator/usr/share/bash-completion/completions/tmuxinator
+	install -D -m644 $(CURDIR)/completion/tmuxinator.fish \
+	  $(CURDIR)/debian/tmuxinator/usr/share/fish/vendor_completions.d/tmuxinator.fish
+	install -D -m644 $(CURDIR)/completion/mux.fish \
+	  $(CURDIR)/debian/tmuxinator/usr/share/fish/vendor_completions.d/mux.fish
