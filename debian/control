@@ -15,9 +15,9 @@ Build-Depends: debhelper (>= 9),
                ruby-factory-girl,
                tmux
 Standards-Version: 3.9.6
-Vcs-Browser: http://anonscm.debian.org/gitweb?p=pkg-ruby-extras/tmuxinator.git;a=summary
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-ruby-extras/tmuxinator.git
 Vcs-Git: git://anonscm.debian.org/pkg-ruby-extras/tmuxinator.git
-Homepage: http://github.com/mojombo/tmuxinator
+Homepage: https://github.com/tmuxinator/tmuxinator
 XS-Ruby-Versions: all
 
 Package: tmuxinator
