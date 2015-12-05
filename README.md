@@ -1,6 +1,6 @@
 # Tmuxinator
 
-[![Gem Version](https://badge.fury.io/rb/tmuxinator.svg)](http://badge.fury.io/rb/tmuxinator) [![Build Status](https://secure.travis-ci.org/tmuxinator/tmuxinator.png)](http://travis-ci.org/tmuxinator/tmuxinator?branch=master) [![Coverage Status](https://img.shields.io/coveralls/tmuxinator/tmuxinator.svg)](https://coveralls.io/r/tmuxinator/tmuxinator?branch=master) [![Code Climate](https://codeclimate.com/github/tmuxinator/tmuxinator/badges/gpa.svg)](https://codeclimate.com/github/tmuxinator/tmuxinator) [![Dependency Status](https://gemnasium.com/tmuxinator/tmuxinator.svg)](https://gemnasium.com/tmuxinator/tmuxinator)
+[![Gem Version](https://badge.fury.io/rb/tmuxinator.svg)](http://badge.fury.io/rb/tmuxinator) [![Build Status](https://secure.travis-ci.org/tmuxinator/tmuxinator.png)](http://travis-ci.org/tmuxinator/tmuxinator?branch=master) [![Coverage Status](https://img.shields.io/coveralls/tmuxinator/tmuxinator.svg)](https://coveralls.io/r/tmuxinator/tmuxinator?branch=master) [![Code Climate](https://codeclimate.com/github/tmuxinator/tmuxinator/badges/gpa.svg)](https://codeclimate.com/github/tmuxinator/tmuxinator) [![Dependency Status](https://gemnasium.com/tmuxinator/tmuxinator.svg)](https://gemnasium.com/tmuxinator/tmuxinator) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tmuxinator/tmuxinator?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Create and manage tmux sessions easily.
 
@@ -123,7 +123,7 @@ windows:
 The windows option allows the specification of any number of tmux windows. Each window is denoted by a YAML array entry, followed by a name
 and command to be run.
 
-```
+```yaml
 windows:
   - editor: vim
 ```
@@ -132,7 +132,7 @@ windows:
 
 An optional root option can be specified per window:
 
-```
+```yaml
 name: test
 root: ~/projects/company
 
@@ -170,7 +170,7 @@ or [specify your own](http://stackoverflow.com/a/9976282/183537).
 
 To use tmuxinator with rbenv, RVM, NVM etc, use the `pre_window` option.
 
-```
+```yaml
 pre_window: rbenv shell 2.0.0-p247
 ```
 
@@ -178,15 +178,15 @@ These command(s) will run before any subsequent commands in all panes and window
 
 ## Custom attachment and post commands
 
-You can set tmuxiniator to skip auto-attaching to the session by using the `attach` option.
+You can set tmuxinator to skip auto-attaching to the session by using the `attach` option.
 
-```
+```yaml
 attach: false
 ```
 
 You can also run arbitrary commands by using the `post` option. This is useful if you want to attach to tmux in a non-standard way (e.g. for a program that makes use of tmux control mode like iTerm2).
 
-```
+```yaml
 post: tmux -CC attach
 ```
 
@@ -198,7 +198,7 @@ SSH for example.
 
 To support this both the window and pane options can take an array as an argument:
 
-```
+```yaml
 name: sample
 root: ~/
 
@@ -217,10 +217,42 @@ windows:
 
 ## ERB
 
-Project files support ERB for reusability across environments. Eg:
+Project files support [ERB](https://en.wikipedia.org/wiki/ERuby#erb) for reusability across environments. Eg:
 
-```
+```yaml
 root: <%= ENV["MY_CUSTOM_DIR"] %>
+```
+
+You can also pass arguments to your projects, and access them with ERB. Simple arguments are available in an array named `@args`.
+
+Eg:
+```bash
+$ tmuxinator start project foo
+```
+
+```yaml
+# ~/.tmuxinator/project.yml
+
+name: project
+root: ~/<%= @args[0] %>
+
+...
+```
+
+You can also pass key-value pairs using the format `key=value`. These will be available in a hash named `@settings`.
+
+Eg:
+```bash
+$ tmuxinator start project workspace=~/workspace/todo
+```
+
+```yaml
+# ~/.tmuxinator/project.yml
+
+name: project
+root: ~/<%= @settings["workspace"] %>
+
+...
 ```
 
 ## Starting a session
@@ -234,6 +266,8 @@ tmuxinator start [project] [alias]
 If you use the optional `[alias]` argument, it will start a new tmux session
 with the custom alias name provided.  This is to enable reuse of a project
 without tmux session name collision.
+
+If there is a `./.tmuxinator.yml` file in the current working directory but not a named project file in `~/.tmuxinator`, tmuxinator will use the local file.  This is primarily intended to be used for sharing tmux configurations in complex development environments.
 
 ## Shorthand
 
