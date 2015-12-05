@@ -3,10 +3,14 @@ require "spec_helper"
 describe Tmuxinator::Window do
   let(:project) { double }
   let(:panes) { ["vim", nil, "top"] }
+  let(:window_name) { "editor" }
   let(:yaml) do
     {
-      "editor" => {
-        "pre" => ["echo 'I get run in each pane.  Before each pane command!'", nil],
+      window_name => {
+        "pre" => [
+          "echo 'I get run in each pane.  Before each pane command!'",
+          nil
+        ],
         "layout" => "main-vertical",
         "panes" => panes
       }
@@ -17,7 +21,10 @@ describe Tmuxinator::Window do
       "editor" => {
         "root" => "/project/override",
         "root?" => true,
-        "pre" => ["echo 'I get run in each pane.  Before each pane command!'", nil],
+        "pre" => [
+          "echo 'I get run in each pane.  Before each pane command!'",
+          nil
+        ],
         "layout" => "main-vertical",
         "panes" => panes
       }
@@ -29,12 +36,12 @@ describe Tmuxinator::Window do
 
   before do
     allow(project).to receive_messages(
-       :tmux => "tmux",
-       :name => "test",
-       :base_index => 1,
-       :root => "/project/tmuxinator",
-       :root? => true
-     )
+      tmux: "tmux",
+      name: "test",
+      base_index: 1,
+      root: "/project/tmuxinator",
+      root?: true
+    )
   end
 
   describe "#initialize" do
@@ -61,7 +68,7 @@ describe Tmuxinator::Window do
     let(:pane) { double(:pane) }
 
     before do
-      allow(Tmuxinator::Pane).to receive_messages :new => pane
+      allow(Tmuxinator::Pane).to receive_messages new: pane
     end
 
     context "with a three element Array" do
@@ -133,7 +140,10 @@ describe Tmuxinator::Window do
       end
 
       it "returns the flattened command" do
-        expect(window.commands).to eq ["tmux send-keys -t test:1 git\\ fetch C-m", "tmux send-keys -t test:1 git\\ status C-m"]
+        expect(window.commands).to eq [
+          "tmux send-keys -t test:1 git\\ fetch C-m",
+          "tmux send-keys -t test:1 git\\ status C-m"
+        ]
       end
     end
 
@@ -158,27 +168,78 @@ describe Tmuxinator::Window do
     end
   end
 
+  describe "#name_options" do
+    context "with a name" do
+      let(:window_name) { "editor" }
+
+      it "specifies name with tmux name option" do
+        expect(window.tmux_window_name_option).to eq "-n #{window_name}"
+      end
+    end
+
+    context "without a name" do
+      let(:window_name) { nil }
+
+      it "specifies no tmux name option" do
+        expect(window.tmux_window_name_option).to be_empty
+      end
+    end
+  end
+
   describe "#tmux_new_window_command" do
     let(:project) { double(:project) }
     let(:window) { Tmuxinator::Window.new(yaml, 0, project) }
+    let(:root?) { true }
+    let(:root) { "/project/tmuxinator" }
 
     before do
       allow(project).to receive_messages(
-        :name => "",
-        :tmux => "tmux",
-        :root => "/project/tmuxinator",
-        :root? => true,
-        :base_index => 1
+        name: "test",
+        tmux: "tmux",
+        root: root,
+        root?: root?,
+        base_index: 1
       )
     end
 
-    context "tmux 1.6 and below" do
-      before do
-        allow(Tmuxinator::Config).to receive_messages(:version => 1.6)
+    let(:tmux_part) { project.tmux }
+    let(:window_part) { "new-window" }
+    let(:name_part) { window.tmux_window_name_option }
+    let(:target_part) { "-t #{window.tmux_window_target}" }
+    let(:path_part) { "#{path_option} #{project.root}" }
+
+    let(:path_option) { "-c" }
+    let(:full_command) do
+      "#{tmux_part} #{window_part} #{path_part} #{target_part} #{name_part}"
+    end
+
+    before do
+      allow(Tmuxinator::Config).to receive(:default_path_option) { path_option }
+    end
+
+    it "contstructs window command with path, target, and name options" do
+      expect(window.tmux_new_window_command).to eq full_command
+    end
+
+    context "root not set" do
+      let(:root?) { false }
+      let(:root) { nil }
+
+      let(:path_part) { nil }
+
+      it "has an extra space instead of path_part" do
+        expect(window.tmux_new_window_command).to eq full_command
+      end
+    end
+
+    context "name not set" do
+      let(:window_name) { nil }
+      let(:full_command) do
+        "#{tmux_part} #{window_part} #{path_part} #{target_part} "
       end
 
-      it "specifies root path by passing default-path to tmux" do
-        expect(window.tmux_new_window_command).to include("default-path /project/tmuxinator")
+      it "does not set name option" do
+        expect(window.tmux_new_window_command).to eq full_command
       end
     end
   end
