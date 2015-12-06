@@ -1,28 +1,26 @@
-From: Debian Ruby Extras Maintainers
- <pkg-ruby-extras-maintainers@lists.alioth.debian.org>
-Date: Fri, 16 Oct 2015 19:02:30 +0900
-Subject: Drop simplecov support
+From: Guy Hughes <g@gxg.me>
+Date: Sat, 5 Dec 2015 19:18:59 -0500
+Subject: drop SimpleCov
 
-Signed-off-by: Youhei SASAKI <uwabami@gfd-dennou.org>
 ---
  Gemfile             |  1 -
  spec/spec_helper.rb | 10 ----------
  2 files changed, 11 deletions(-)
 
 diff --git a/Gemfile b/Gemfile
-index 6700e4b..b71c4f2 100644
+index 5afc8c0..657c102 100644
 --- a/Gemfile
 +++ b/Gemfile
 @@ -5,7 +5,6 @@ gemspec
  
- gem 'rake', '~> 10.4'
- gem 'rspec', '~> 3.1'
--gem 'simplecov', '~> 0.9'
- gem 'coveralls', '~> 0.7'
- gem 'awesome_print', '~> 1.2'
- gem 'pry', '~> 0.10'
+ gem "rake", "~> 10.4"
+ gem "rspec", "~> 3.3"
+-gem "simplecov", "~> 0.9"
+ gem "coveralls", "~> 0.7"
+ gem "awesome_print", "~> 1.2"
+ gem "pry", "~> 0.10"
 diff --git a/spec/spec_helper.rb b/spec/spec_helper.rb
-index 57a6cdb..da73f8b 100644
+index 2a4b73f..cb2ac2a 100644
 --- a/spec/spec_helper.rb
 +++ b/spec/spec_helper.rb
 @@ -1,15 +1,5 @@
@@ -35,7 +33,7 @@ index 57a6cdb..da73f8b 100644
 -  Coveralls::SimpleCov::Formatter
 -]
 -SimpleCov.start do
--  add_filter 'vendor/cache'
+-  add_filter "vendor/cache"
 -end
 -
  require "tmuxinator"

@@ -1,8 +1,7 @@
-From: Youhei SASAKI <uwabami@gfd-dennou.org>
-Date: Sat, 17 Oct 2015 02:46:06 +0900
-Subject: Drop shebang
+From: Guy Hughes <g@gxg.me>
+Date: Sat, 5 Dec 2015 19:19:20 -0500
+Subject: drop bash completion
 
-Signed-off-by: Youhei SASAKI <uwabami@gfd-dennou.org>
 ---
  completion/tmuxinator.bash | 2 --
  1 file changed, 2 deletions(-)
