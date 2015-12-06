@@ -1,3 +1,13 @@
+tmuxinator (0.7.0-1) unstable; urgency=medium
+
+  [ Youhei SASAKI ]
+  * Imported Upstream version 0.7.0
+
+  [ Guy Hughes ]
+  * Create patches for new upstream release
+
+ -- Youhei SASAKI <uwabami@gfd-dennou.org>  Sun, 06 Dec 2015 20:58:48 +0900
+
 tmuxinator (0.6.11-1) unstable; urgency=medium
 
   * Initial release. (Closes: #801993)
