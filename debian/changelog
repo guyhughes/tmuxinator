@@ -1,3 +1,10 @@
+tmuxinator (0.7.0a-0.1~git20151130) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Closes #807510, from upstream bug. 
+
+ -- Guy Hughes <g@gxg.me>  Fri, 11 Dec 2015 04:23:36 +0000
+
 tmuxinator (0.7.0-1) unstable; urgency=medium
 
   [ Youhei SASAKI ]
