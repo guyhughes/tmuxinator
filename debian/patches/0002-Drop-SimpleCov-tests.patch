@@ -1,37 +1,38 @@
 From: Guy Hughes <g@gxg.me>
-Date: Sat, 5 Dec 2015 19:18:59 -0500
-Subject: drop SimpleCov
+Date: Thu, 10 Dec 2015 23:57:06 -0500
+Subject: Drop SimpleCov tests
 
 ---
  Gemfile             |  1 -
- spec/spec_helper.rb | 10 ----------
- 2 files changed, 11 deletions(-)
+ spec/spec_helper.rb | 11 -----------
+ 2 files changed, 12 deletions(-)
 
 diff --git a/Gemfile b/Gemfile
-index 5afc8c0..657c102 100644
+index 55da442..657c102 100644
 --- a/Gemfile
 +++ b/Gemfile
 @@ -5,7 +5,6 @@ gemspec
  
  gem "rake", "~> 10.4"
  gem "rspec", "~> 3.3"
--gem "simplecov", "~> 0.9"
+-gem "simplecov", "~> 0.11.0"
  gem "coveralls", "~> 0.7"
  gem "awesome_print", "~> 1.2"
  gem "pry", "~> 0.10"
 diff --git a/spec/spec_helper.rb b/spec/spec_helper.rb
-index 2a4b73f..cb2ac2a 100644
+index 9dbfea1..cb2ac2a 100644
 --- a/spec/spec_helper.rb
 +++ b/spec/spec_helper.rb
-@@ -1,15 +1,5 @@
+@@ -1,16 +1,5 @@
  require "coveralls"
 -require "simplecov"
  require "pry"
 -
--SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+-formatters = [
 -  SimpleCov::Formatter::HTMLFormatter,
 -  Coveralls::SimpleCov::Formatter
 -]
+-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
 -SimpleCov.start do
 -  add_filter "vendor/cache"
 -end

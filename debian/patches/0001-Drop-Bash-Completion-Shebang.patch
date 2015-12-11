@@ -1,6 +1,6 @@
 From: Guy Hughes <g@gxg.me>
-Date: Sat, 5 Dec 2015 19:19:20 -0500
-Subject: drop bash completion
+Date: Thu, 10 Dec 2015 23:53:41 -0500
+Subject: Drop Bash Completion Shebang
 
 ---
  completion/tmuxinator.bash | 2 --
