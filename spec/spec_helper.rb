@@ -1,16 +1,5 @@
 require "coveralls"
-require "simplecov"
 require "pry"
-
-formatters = [
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
-]
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new(formatters)
-SimpleCov.start do
-  add_filter "vendor/cache"
-end
-
 require "tmuxinator"
 require "factory_girl"
 
