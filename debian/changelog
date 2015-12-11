@@ -1,3 +1,11 @@
+tmuxinator (0.7.0-2) unstable; urgency=medium
+
+  * Import upstream bug fix #358 (Closes: #807510)
+    Thanks to mention and report: Guy Hughes
+    - add patch: 0003-Opening-will-not-recreate-projects.patch
+
+ -- Youhei SASAKI <uwabami@gfd-dennou.org>  Fri, 11 Dec 2015 15:52:58 +0900
+
 tmuxinator (0.7.0-1) unstable; urgency=medium
 
   [ Youhei SASAKI ]
