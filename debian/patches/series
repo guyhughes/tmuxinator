@@ -1,2 +1,3 @@
 0001-drop-SimpleCov.patch
 0002-drop-bash-completion-shebang.patch
+0003-Opening-will-not-recreate-projects.patch

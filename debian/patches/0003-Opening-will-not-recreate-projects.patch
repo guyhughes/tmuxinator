@@ -1,0 +1,76 @@
+From 902942dc7dca98fe17d4775426b29bcf9eb4d6cf Mon Sep 17 00:00:00 2001
+From: Jonathan Arnett <jonarnett90@gmail.com>
+Date: Wed, 18 Nov 2015 11:56:23 -0500
+Subject: [PATCH 2/7] Opening will not recreate projects
+
+---
+ lib/tmuxinator/cli.rb           |  2 +-
+ spec/lib/tmuxinator/cli_spec.rb | 13 +++++++------
+ 2 files changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/lib/tmuxinator/cli.rb b/lib/tmuxinator/cli.rb
+index 5b0b383..8648b77 100644
+--- a/lib/tmuxinator/cli.rb
++++ b/lib/tmuxinator/cli.rb
+@@ -72,7 +72,7 @@ module Tmuxinator
+                      else
+                        Tmuxinator::Config.default_project(name)
+                      end
+-      unless Tmuxinator::Config.exists?(project_file)
++      unless File.exists?(project_file)
+         template = Tmuxinator::Config.default? ? :default : :sample
+         content = File.read(Tmuxinator::Config.send(template.to_sym))
+         erb = Erubis::Eruby.new(content).result(binding)
+diff --git a/spec/lib/tmuxinator/cli_spec.rb b/spec/lib/tmuxinator/cli_spec.rb
+index 8b7b9f1..30b78ad 100644
+--- a/spec/lib/tmuxinator/cli_spec.rb
++++ b/spec/lib/tmuxinator/cli_spec.rb
+@@ -164,7 +164,7 @@ describe Tmuxinator::Cli do
+ 
+       context "existing project doesn't exist" do
+         before do
+-          expect(Tmuxinator::Config).to receive_messages(exists?: false)
++          expect(File).to receive_messages(exists?: false)
+         end
+ 
+         it "creates a new tmuxinator project file" do
+@@ -174,14 +174,15 @@ describe Tmuxinator::Cli do
+       end
+ 
+       context "files exists" do
+-        let(:command) { "#{ENV['HOME']}\/\.tmuxinator\/#{name}\.yml" }
++        let(:root_path) { "#{ENV['HOME']}\/\.tmuxinator\/#{name}\.yml" }
+ 
+         before do
+-          expect(Tmuxinator::Config).to receive_messages(exists?: true)
++          allow(File).to receive(:exists?).with(anything).and_return(false)
++          expect(File).to receive(:exists?).with(root_path).and_return(true)
+         end
+ 
+         it "just opens the file" do
+-          expect(Kernel).to receive(:system).with(%r{#{command}})
++          expect(Kernel).to receive(:system).with(%r{#{root_path}})
+           capture_io { cli.start }
+         end
+       end
+@@ -194,7 +195,7 @@ describe Tmuxinator::Cli do
+ 
+       context "existing project doesn't exist" do
+         before do
+-          expect(Tmuxinator::Config).to receive(:exists?).at_least(:once) do
++          allow(File).to receive(:exists?).at_least(:once) do
+             false
+           end
+         end
+@@ -208,7 +209,7 @@ describe Tmuxinator::Cli do
+       context "files exists" do
+         let(:path) { Tmuxinator::Config::LOCAL_DEFAULT }
+         before do
+-          expect(Tmuxinator::Config).to receive(:exists?).with(path) { true }
++          expect(File).to receive(:exists?).with(path) { true }
+         end
+ 
+         it "just opens the file" do
+-- 
+2.6.3
+
